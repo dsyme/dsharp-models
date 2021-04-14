@@ -15,21 +15,31 @@
 namespace Support.Text
 
 open DiffSharp
+open DiffSharp.ShapeChecking
 
 /// Tokenized text passage.
+/// This type accepts symbolic annotations "batchSize" and "maxSequenceLength"
+[<Symbolic>]
 type TextBatch(tokenIds: Tensor (*<int32>*), tokenTypeIds: Tensor (*<int32>*), mask: Tensor (*<int32>*)) =
-  /// IDs that correspond to the vocabulary used while tokenizing.
-  /// The shape of this tensor is `[batchSize, maxSequenceLength]`.
-  member _.tokenIds = tokenIds
+    /// IDs that correspond to the vocabulary used while tokenizing.
+    /// The shape of this tensor is `[batchSize, maxSequenceLength]`.
+    member _.tokenIds = tokenIds
 
-  /// IDs of the token types (e.g., sentence A and sentence B in BERT).
-  /// The shape of this tensor is `[batchSize, maxSequenceLength]`.
-  member _.tokenTypeIds = tokenTypeIds 
+    /// IDs of the token types (e.g., sentence A and sentence B in BERT).
+    /// The shape of this tensor is `[batchSize, maxSequenceLength]`.
+    member _.tokenTypeIds = tokenTypeIds 
 
-  /// Mask over the sequence of tokens specifying which ones are "real" as 
-  /// opposed to "padding".
-  /// The shape of this tensor is `[batchSize, maxSequenceLength]`.
-  member _.mask = mask 
+    /// Mask over the sequence of tokens specifying which ones are "real" as 
+    /// opposed to "padding".
+    /// The shape of this tensor is `[batchSize, maxSequenceLength]`.
+    member _.mask = mask
+
+    /// TODO: make the presence of a ForShape method + Shapeable attribute allow use of shaped TextBatch in shape checking
+    static member FromSymbolicAnnotations(annotations: Int[]) =
+        if annotations.Length <> 2 then 
+            failwith "a shape of two dimensions is expected"
+        let shape = Shape annotations
+        TextBatch(dsharp.zeros shape, dsharp.zeros shape, dsharp.zeros shape)
 
 //// TODO: Use parallelism to grab the samples in parallel.
 //extension TextBatch: Collatable {

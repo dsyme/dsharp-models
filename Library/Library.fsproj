@@ -8,7 +8,7 @@
 
     <!-- ANALYZERS: use the freshly built compiler to make sure we have analyzer support -->
     <FscToolExe>fsc.exe</FscToolExe>
-    <FscToolPath>C:\GitHub\dsyme\fsharp\artifacts\bin\fsc\Debug\net472</FscToolPath>
+    <FscToolPath>C:\GitHub\dsyme\fsharp\artifacts\bin\fsc\Release\net472</FscToolPath>
     <DisableAutoSetFscCompilerPath>true</DisableAutoSetFscCompilerPath>
     <DotnetFscCompilerPath></DotnetFscCompilerPath>
   </PropertyGroup>
@@ -16,7 +16,7 @@
   <ItemGroup>
 
     <!-- ANALYZERS: reference the analyzer by a direct reference  -->
-    <FscCompilerTools Include="e:\GitHub\dsyme\FSharp.Compiler.PortaCode\FSharp.Tools.LiveChecks.Analyzer\bin\Debug\netstandard2.0"/>
+    <FscCompilerTools Include="e:\GitHub\dsyme\FSharp.Compiler.PortaCode\FSharp.Tools.LiveChecks.Analyzer\bin\Debug\netstandard2.0\publish"/>
 
     <ProjectReference Include="..\..\DiffSharp\tools\DiffSharp.Backends.ShapeChecking\DiffSharp.Backends.ShapeChecking.fsproj" />
     <ProjectReference Include="..\..\DiffSharp\src\DiffSharp.Core\DiffSharp.Core.fsproj" />

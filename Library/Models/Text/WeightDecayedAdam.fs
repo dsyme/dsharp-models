@@ -21,8 +21,8 @@ open DiffSharp.Optim
 ///
 /// Reference: ["Adam - A Method for Stochastic Optimization"](
 /// https://arxiv.org/abs/1412.6980v8)
-type WeightDecayedAdam(?learningRate: double, ?beta1: double, ?beta2: double, ?weightDecayRate: double, ?epsilon: double) = 
-  inherit ParameterGroupOptimizer()
+type WeightDecayedAdam(model, ?learningRate: double, ?beta1: double, ?beta2: double, ?weightDecayRate: double, ?epsilon: double) = 
+  inherit ParameterGroupOptimizer(model)
   let learningRate = defaultArg learningRate 0.01
   let beta1 = defaultArg beta1 0.9
   let beta2 = defaultArg beta2 0.999

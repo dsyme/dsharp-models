@@ -36,15 +36,6 @@ extension KeyPathIterable {
 
 
 
-type Tensor with
-    /// Returns this tensor reshaped to a matrix (i.e., a rank-2 tensor).
-    member t.reshapedToMatrix() =
-        t.reshape([-1; t.shape.[t.dim - 1]])
-
-    /// Returns this previously-reshaped rank-2 tensor reshaped back to its original shape.
-    member t.reshapedFromMatrix(originalShape: Shape) =
-        t.reshape(Shape [| yield! originalShape.Dims.[0..originalShape.Length - 2]; yield t.shapex.[t.dim - 1] |])
-
     //member t.reshapedFromMatrix(originalShape: Tensor) = Tensor {
     //    reshaped(
     //        toShape: Tensor (*<int32>*)(concatenating: [

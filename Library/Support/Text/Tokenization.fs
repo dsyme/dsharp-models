@@ -42,6 +42,7 @@ module Tokenization =
     ///     `[batchSize, sequenceLength]`.
     ///
     /// - Returns: Attention mask with shape `[batchSize, sequenceLength, sequenceLength]`.
+    //[<ShapeCheck("batchSize,maxSequenceLength", ReturnShape="batchSize, sequenceLength, sequenceLength")>]
     let createAttentionMask(text: TextBatch) : Tensor =
         let batchSize = text.tokenIds.shape.[0]
         let fromSequenceLength = text.tokenIds.shape.[1]

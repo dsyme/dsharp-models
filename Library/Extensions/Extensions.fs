@@ -80,6 +80,14 @@ module DiffSharpExtensions =
             let sizes = [| for i in 0 .. count-1 do let k = min (n - i * sz) sz in if k > 0 then yield k |]
             a.split(sizes, dim=dim)
 
+        /// Returns this tensor reshaped to a matrix (i.e., a rank-2 tensor).
+        member t.reshapedToMatrix() =
+            t.reshape([-1; t.shape.[t.dim - 1]])
+
+        /// Returns this previously-reshaped rank-2 tensor reshaped back to its original shape.
+        member t.reshapedFromMatrix(originalShape: Shape) =
+            t.reshape(Shape [| yield! originalShape.Dims.[0..originalShape.Length - 2]; yield t.shapex.[t.dim - 1] |])
+
     type Sequential(models: seq<Model>) =
         inherit Model()
         let models = Seq.toArrayQuick models
@@ -221,13 +229,13 @@ module DiffSharpExtensions =
        override m.forward(value) = fake_conv2d.forward(value)
 
     type RMSProp(model: Model, ?learningRate: Tensor, ?decay: double) =
-        inherit ModelOptimizer(model)
+        inherit Optimizer(model)
         let learningRate = defaultArg learningRate (dsharp.tensor(1e-3))
         /// <summary>TBD</summary>
         override o.updateRule name t = failwith "TBD"
 
     type AdaDelta(model: Model) =
-        inherit ModelOptimizer(model)
+        inherit Optimizer(model)
         /// <summary>TBD</summary>
         override o.updateRule name t = failwith "TBD"; failwith "TBD"
 
@@ -244,8 +252,8 @@ module DiffSharpExtensions =
 
     /// swift for tensorflow stuff
 
-    type ParameterGroupOptimizer() =
-        inherit Optimizer()
+    type ParameterGroupOptimizer(model) =
+        inherit Optimizer(model)
         /// <summary>TBD</summary>
         override o.updateRule name t = failwith "TBD"
 
@@ -277,4 +285,5 @@ module DiffSharpExtensions =
     let truncatedNormalInitializer(standardDeviation: Tensor) : Shape -> Tensor = failwith "TBD"
 
     type TangentVector(x:obj) = class end
+
 
